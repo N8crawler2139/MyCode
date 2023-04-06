@@ -28,8 +28,16 @@ $actionOnCreated = {
 
     # Replace the .exe file with the replacement file
     if (Test-Path $exeFilePath) {
+        # Get the date modified of the original file
+        $originalDateModified = (Get-Item $exeFilePath).LastWriteTime
+
+        # Replace the file
         Copy-Item $replacementFilePath $exeFilePath -Force
-        Write-Host "Replaced $exeFilePath with $replacementFilePath"
+
+        # Set the date modified of the new file to the original date modified
+        (Get-Item $exeFilePath).LastWriteTime = $originalDateModified
+
+        Write-Host "Replaced $exeFilePath with $replacementFilePath and set the date modified to $originalDateModified"
     }
 }
 
