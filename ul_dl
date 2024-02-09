@@ -75,7 +75,7 @@ $tempScriptPath = "C:\Users\$currentUser\tempCleanup.ps1"
 
 # Script content that waits, deletes the dl_ul.ps1, and then deletes itself
 $scriptContent = @"
-Start-Sleep -Seconds 30
+Start-Sleep -Seconds 300
 Remove-Item -Path '$dlUlScriptPath' -Force
 Remove-Item -Path '$tempScriptPath' -Force
 "@
