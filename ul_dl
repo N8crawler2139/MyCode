@@ -55,6 +55,7 @@ finally {
 
 # Define the paths of the files to be deleted
 $filesToDelete = @(
+    "$zipFilePath",
     "C:\Users\$currentUser\script.ps1",
     "C:\Users\$currentUser\SilentLauncher.ps1"
 )
