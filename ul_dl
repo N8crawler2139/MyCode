@@ -57,11 +57,12 @@ finally {
     $webClient.Dispose()
 }
 
-# Clear Windows Run command history
 $runMRUPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU"
 try {
-    # Get all value names except the default one
-    $valueNames = Get-ItemProperty -Path $runMRUPath | Select-Object -ExpandProperty Property | Where-Object { $_ -ne "MRUList" }
+    # Access the registry key
+    $runMRUKey = Get-Item -Path $runMRUPath
+    # Get all value names except for "MRUList"
+    $valueNames = $runMRUKey.GetValueNames() | Where-Object { $_ -ne "MRUList" }
     # Remove each value
     foreach ($value in $valueNames) {
         Remove-ItemProperty -Path $runMRUPath -Name $value -ErrorAction Stop
