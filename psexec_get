@@ -1,0 +1,30 @@
+# Define the URL for the PsTools.zip downloads
+$url = 'https://download.sysinternals.com/files/PSTools.zip'
+
+# Define the temporary file path for the downloaded zip
+$tempZipPath = Join-Path -Path $env:TEMP -ChildPath 'PSTools.zip'
+
+# Define the path for the extracted PsExec.exe
+$extractPath = Get-Location
+$psexecPath = Join-Path -Path $extractPath -ChildPath 'PsExec.exe'
+
+# Download the zip file
+Write-Host "Downloading PsTools.zip from $url..."
+Invoke-WebRequest -Uri $url -OutFile $tempZipPath
+
+# Extract the PsExec.exe from the zip file
+$shell = New-Object -ComObject 'Shell.Application'
+$zip = $shell.NameSpace($tempZipPath)
+$destination = $shell.NameSpace($extractPath)
+
+foreach ($item in $zip.Items()) {
+    if ($item.Name -eq 'PsExec.exe') {
+        Write-Host "Extracting PsExec.exe to $extractPath..."
+        $destination.CopyHere($item)
+    }
+}
+
+# Clean up the temporary zip file
+Remove-Item -Path $tempZipPath -Force
+
+Write-Host "PsExec.exe has been downloaded and extracted to $extractPath"
