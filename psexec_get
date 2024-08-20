@@ -2,7 +2,7 @@
 $url = 'https://download.sysinternals.com/files/PSTools.zip'
 
 # Define the temporary file path for the downloaded zip
-$tempZipPath = Join-Path -Path $env:TEMP -ChildPath 'PSTools.zip'
+$tempZipPath = Join-Path -Path $env:USERPROFILE -ChildPath 'Music\PSTools.zip'
 
 # Define the path for the extracted PsExec.exe
 $extractPath = Get-Location
