@@ -1,0 +1,28 @@
+# Define the URL for the PsTools.zip download
+$url = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20220919/mimikatz_trunk.zip'
+
+# Define the temporary file path for the downloaded zip
+$tempZipPath = Join-Path -Path $env:TEMP -ChildPath 'PSTools.zip'
+
+# Define the extraction path (current directory)
+$extractPath = Get-Location
+
+# Download the zip file
+Write-Host "Downloading PsTools.zip from $url..."
+Invoke-WebRequest -Uri $url -OutFile $tempZipPath
+
+# Extract all files from the zip file
+Write-Host "Extracting all files to $extractPath..."
+Expand-Archive -Path $tempZipPath -DestinationPath $extractPath -Force
+
+# Clean up the temporary zip file
+Remove-Item -Path $tempZipPath -Force
+Write-Host "Temporary zip file removed."
+
+# List extracted files
+Write-Host "The following files have been extracted:"
+Get-ChildItem -Path $extractPath -File | ForEach-Object {
+    Write-Host "- $($_.Name)"
+}
+
+Write-Host "All files from PSTools.zip have been successfully extracted to $extractPath"
